@@ -5,16 +5,16 @@ Simple NestJS module that adds a `/health` GET route returning application uptim
 ### Install
 
 ```bash
-npm install nestjs-healthcheck-lite
+npm install @bee4boop/nestjs-healthcheck
 # or
-pnpm add nestjs-healthcheck-lite
+pnpm add @bee4boop/nestjs-healthcheck
 ```
 
 ### Usage
 
 ```ts
 import { Module } from '@nestjs/common'
-import { HealthModule } from 'nestjs-healthcheck-lite'
+import { HealthModule } from '@bee4boop/nestjs-healthcheck'
 
 @Module({
 	imports: [
