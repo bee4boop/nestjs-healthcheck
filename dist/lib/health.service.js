@@ -17,9 +17,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HealthService = void 0;
 const common_1 = require("@nestjs/common");
+const os_1 = __importDefault(require("os"));
 const format_duration_1 = require("./format-duration");
 const health_constants_1 = require("./health.constants");
-const os_1 = __importDefault(require("os"));
 let HealthService = class HealthService {
     constructor(options = {}) {
         this.options = options;

@@ -9,9 +9,9 @@ var HealthModule_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HealthModule = void 0;
 const common_1 = require("@nestjs/common");
+const health_constants_1 = require("./health.constants");
 const health_controller_1 = require("./health.controller");
 const health_service_1 = require("./health.service");
-const health_constants_1 = require("./health.constants");
 let HealthModule = HealthModule_1 = class HealthModule {
     static forRoot(options) {
         return {
