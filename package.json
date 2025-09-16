@@ -1,6 +1,6 @@
 {
 	"name": "@bee4boop/nestjs-healthcheck",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Simple NestJS Health module that exposes GET /health with uptime and DB status.",
 	"license": "MIT",
 	"repository": {
