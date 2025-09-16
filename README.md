@@ -48,12 +48,73 @@ The `/health` endpoint returns JSON like:
 - `HealthModule.forRoot(options?)`
   - **databaseCheck**: optional `() => string | Promise<string>` returning database status. Default: `'OK'`. Throw to mark `'DOWN'`.
 
-### Publish
+### Examples: databaseCheck
 
-This package is compatible with both npm and pnpm.
+#### MongoDB (native driver)
 
-```bash
-npm publish --access public
-# or
-pnpm publish --access public
+```ts
+// db/mongo.ts
+import { MongoClient } from 'mongodb'
+
+export const mongoClient = new MongoClient(process.env.MONGO_URI!)
+
+export async function ensureMongoConnected() {
+	if (!mongoClient.topology) {
+		await mongoClient.connect()
+	}
+}
 ```
+
+```ts
+// app.module.ts
+import { Module } from '@nestjs/common'
+import { HealthModule } from '@bee4boop/nestjs-healthcheck'
+import { ensureMongoConnected, mongoClient } from './db/mongo'
+
+@Module({
+	imports: [
+		HealthModule.forRoot({
+			databaseCheck: async () => {
+				await ensureMongoConnected()
+				await mongoClient.db().command({ ping: 1 })
+				return 'OK'
+			},
+		}),
+	],
+})
+export class AppModule {}
+```
+
+Note: with Mongoose you can use `await mongoose.connection.db.admin().ping()`.
+
+#### PostgreSQL (pg)
+
+```ts
+// db/postgres.ts
+import { Pool } from 'pg'
+
+export const pgPool = new Pool({
+	connectionString: process.env.DATABASE_URL,
+})
+```
+
+```ts
+// app.module.ts
+import { Module } from '@nestjs/common'
+import { HealthModule } from '@bee4boop/nestjs-healthcheck'
+import { pgPool } from './db/postgres'
+
+@Module({
+	imports: [
+		HealthModule.forRoot({
+			databaseCheck: async () => {
+				await pgPool.query('SELECT 1')
+				return 'OK'
+			},
+		}),
+	],
+})
+export class AppModule {}
+```
+
+Alternatives: TypeORM `await dataSource.query('SELECT 1')`, Prisma `await prisma.$queryRawUnsafe('SELECT 1')`.
